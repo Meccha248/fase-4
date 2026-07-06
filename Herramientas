@@ -1,0 +1,131 @@
+import tkinter as tk
+from tkinter import messagebox
+
+# --- CLASE PRINCIPAL: HerramientaAlquiler ---
+# Paso #3.2: Análisis de requerimientos - Definición de la clase
+class HerramientaAlquiler:
+    def __init__(self, id_herramienta, tarifa_hora):
+        # Atributos privados (Paso #3.2)
+        self._id_herramienta = id_herramienta
+        self._tarifa_hora = tarifa_hora
+        self._hora_salida = None
+
+    def registrar_salida(self, hora):
+        """Registra la hora de salida en formato militar (0-23)"""
+        if 0 <= hora <= 23:
+            self._hora_salida = hora
+            return True
+        return False
+
+    def calcular_costo(self, hora_retorno):
+        """Calcula el costo basándose en la diferencia de horas militares"""
+        # Validación de horas incorrectas (Paso #3.2)
+        if self._hora_salida is None or hora_retorno <= self._hora_salida or not (0 <= hora_retorno <= 23):
+            return None
+        
+        horas_usadas = hora_retorno - self._hora_salida
+        return horas_usadas * self._tarifa_hora
+
+    def obtener_id(self):
+        return self._id_herramienta
+
+# --- INTERFAZ GRÁFICA: Tkinter ---
+class AppAlquiler:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Sistema de Alquiler de Herramientas")
+        self.root.geometry("450x350")
+        
+        # Inventario interno
+        self.inventario = [
+            HerramientaAlquiler("Taladro-X1", 10.0),
+            HerramientaAlquiler("Sierra-M2", 15.0),
+            HerramientaAlquiler("Pulidora-P3", 12.5)
+        ]
+        
+        self.pantalla_login()
+
+    def pantalla_login(self):
+        """Paso #3.3: Interfaz de inicio con nombre del programa y autor"""
+        self.limpiar_pantalla()
+        
+        tk.Label(self.root, text="ALQUILER DE HERRAMIENTAS V1.0", font=("Arial", 12, "bold")).pack(pady=10)
+        tk.Label(self.root, text="Autor: [Tu Nombre Completo]").pack() # <--- PON TU NOMBRE AQUÍ
+        
+        tk.Label(self.root, text="\nUsuario:").pack()
+        self.ent_user = tk.Entry(self.root)
+        self.ent_user.pack()
+        
+        tk.Label(self.root, text="Contraseña:").pack()
+        self.ent_pass = tk.Entry(self.root, show="*")
+        self.ent_pass.pack()
+        
+        tk.Button(self.root, text="Ingresar al Sistema", command=self.validar_login).pack(pady=20)
+
+    def validar_login(self):
+        """Paso #3.4: Validación de credenciales 'programación'"""
+        # Se obtiene el texto de los campos y se valida
+        if self.ent_user.get() == "programación" and self.ent_pass.get() == "programación":
+            self.pantalla_gestion()
+        else:
+            messagebox.showerror("Acceso Denegado", "Usuario o contraseña incorrectos")
+
+    def pantalla_gestion(self):
+        """Paso #3.4: Interfaz de procesos con formato de hora militar"""
+        self.limpiar_pantalla()
+        
+        tk.Label(self.root, text="PANEL DE GESTIÓN (Formato 24h)", font=("Arial", 10, "bold")).pack(pady=10)
+        
+        # Selección de Herramienta
+        tk.Label(self.root, text="Seleccione Herramienta:").pack()
+        self.lista_h = tk.StringVar(self.root)
+        self.lista_h.set(self.inventario[0].obtener_id())
+        opciones = [h.obtener_id() for h in self.inventario]
+        tk.OptionMenu(self.root, self.lista_h, *opciones).pack(pady=5)
+
+        # Entradas de Horas Militares
+        tk.Label(self.root, text="Hora Salida (HH: ej. 08, 14, 21):").pack()
+        self.ent_h_salida = tk.Entry(self.root)
+        self.ent_h_salida.pack()
+
+        tk.Label(self.root, text="Hora Retorno (HH: ej. 13, 18, 23):").pack()
+        self.ent_h_retorno = tk.Entry(self.root)
+        self.ent_h_retorno.pack()
+
+        tk.Button(self.root, text="Calcular Alquiler", command=self.procesar_alquiler, bg="#4CAF50", fg="white").pack(pady=20)
+
+    def procesar_alquiler(self):
+        """Lógica para procesar los datos ingresados"""
+        try:
+            id_sel = self.lista_h.get()
+            # Convertimos la entrada a entero para la lógica militar
+            h_salida = int(self.ent_h_salida.get())
+            h_retorno = int(self.ent_h_retorno.get())
+            
+            herramienta = next(h for h in self.inventario if h.obtener_id() == id_sel)
+            
+            if herramienta.registrar_salida(h_salida):
+                costo = herramienta.calcular_costo(h_retorno)
+                if costo is not None:
+                    # Mostrar resultado con formato de hora
+                    res = (f"ID: {id_sel}\n"
+                           f"Uso: De {h_salida:02d}:00 a {h_retorno:02d}:00\n"
+                           f"Total Horas: {h_retorno - h_salida}h\n"
+                           f"Costo Total: ${costo:.2f}")
+                    messagebox.showinfo("Recibo de Alquiler", res)
+                else:
+                    messagebox.showwarning("Error de Datos", "Valide que la hora de retorno sea mayor a la de salida.")
+            else:
+                messagebox.showwarning("Error de Datos", "Hora de salida debe estar entre 00 y 23.")
+        except ValueError:
+            messagebox.showerror("Error", "Ingrese solo números enteros (0-23) para las horas.")
+
+    def limpiar_pantalla(self):
+        """Elimina los widgets actuales para cambiar de interfaz"""
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = AppAlquiler(root)
+    root.mainloop()
