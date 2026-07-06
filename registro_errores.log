@@ -1,0 +1,12 @@
+2026-07-05 23:12:27,571 - ERROR - Fallo al registrar cliente 2 | Detalle: El correo 'ana_sin_arroba_email.com' no tiene un formato válido.
+2026-07-05 23:12:27,572 - ERROR - Error de pago en Reserva 1002 | Detalle: Solo se pueden procesar pagos de reservas confirmadas.
+2026-07-05 23:12:27,573 - ERROR - Fallo de validación en Reserva 1003 | Detalle: El objeto servicio no es válido.
+2026-07-05 23:14:47,870 - ERROR - Fallo al registrar cliente 2 | Detalle: El correo 'ana_sin_arroba_email.com' no tiene un formato válido.
+2026-07-05 23:14:47,871 - ERROR - Error de pago en Reserva 1002 | Detalle: Solo se pueden procesar pagos de reservas confirmadas.
+2026-07-05 23:14:47,872 - ERROR - Fallo de validación en Reserva 1003 | Detalle: El objeto servicio no es válido.
+2026-07-05 23:36:01,857 - ERROR - Fallo al registrar cliente 2 | Detalle: El correo 'ana_sin_arroba_email.com' no tiene un formato válido.
+2026-07-05 23:36:01,859 - ERROR - Error de pago en Reserva 1002 | Detalle: Solo se pueden procesar pagos de reservas confirmadas.
+2026-07-05 23:36:01,859 - ERROR - Fallo de validación en Reserva 1003 | Detalle: El objeto servicio no es válido.
+2026-07-05 23:37:52,412 - ERROR - Fallo al registrar cliente 2 | Detalle: El correo 'ana_sin_arroba_email.com' no tiene un formato válido.
+2026-07-05 23:37:52,414 - ERROR - Error de pago en Reserva 1002 | Detalle: Solo se pueden procesar pagos de reservas confirmadas.
+2026-07-05 23:37:52,414 - ERROR - Fallo de validación en Reserva 1003 | Detalle: El objeto servicio no es válido.
